@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FilterTree
 {
-    class pair
+   public class pair
     {
         public Object first, second;
         public pair(Object a, Object b)

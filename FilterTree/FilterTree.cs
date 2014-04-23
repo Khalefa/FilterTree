@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace FilterTree
 {
     class FilterTree
-    {      
+    {
 
         Node root;
 
@@ -21,24 +21,33 @@ namespace FilterTree
             root = new Node(words);
         }
 
-        public ArrayList getLeafs(int max=1000)
+        public ArrayList getLeafs(int max = 1000)
         {
             ArrayList l = root.getLeafs(max);
             return l;
         }
 
         //here we emply 
-        public ArrayList join(FilterTree x)
+        public pair join(FilterTree x, int threshold)
         {
-            ArrayList pairs = new ArrayList();
-            //
-            Node r1=root;
-            Node r2=x.root;
-            for (int i = 0; i < r1.children.Keys.Count; i++)
+            return root.join(x.root, threshold);
+        }
+        public long estimateCard()
+        {
+            ArrayList leafs = getLeafs(1);
+            //save("a", t);
+            long match = 0;
+            for (int i = 0; i < leafs.Count; i++)
             {
-                
+                Node n = (Node)leafs[i];
+                for (int j = i + 1; j < leafs.Count; j++)
+                {
+                    Node m = (Node)leafs[j];
+                    int d = n.p.diff(m.p);
+                    if (d <= 2) match += (n.cardinality * m.cardinality);
+                }
             }
-            return pairs;
+            return match;
         }
     }
 }

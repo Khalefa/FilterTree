@@ -132,30 +132,26 @@ namespace FilterTree
             bool aa = xx.Equals(x);
             //Point y = w1.getpoint(3);
             //int d = x.diff(y);
+            //RTree<Word> tree = new RTree.RTree<Word>();
+            //Hashtable t = processR(words);
+            
         }
         static void Main(string[] args)
         {
-        //    log.Fatal("dasdasdas");
             ArrayList words = readinput("c:\\data\\web2.txt");
-            //RTree<Word> tree = new RTree.RTree<Word>();
-            //Hashtable t = processR(words);
+            double ec = words.Count ;
             DateTime st = DateTime.Now;
             FilterTree ft = new FilterTree(words);
-            ArrayList leafs= ft.getLeafs(1);
-            //save("a", t);
-            long match=0;
-            for (int i = 0; i < leafs.Count; i++)
-            {
-                Node n = (Node)leafs[i];
-                for (int j = i + 1; j < leafs.Count; j++)
-                {
-                    Node m = (Node)leafs[j];
-                    int d=n.p.diff(m.p);
-                    if (d <= 2) match += (n.cardinality * m.cardinality);
-                }
-            }
+            pair xx1= ft.join(ft,1);
+            pair xx2 = ft.join(ft, 2);
             DateTime et = DateTime.Now;
             Console.WriteLine(et - st);
+            long c1 = (long)xx1.second;
+            long c2 = (long)xx2.second;
+            Console.WriteLine(ec);
+            Console.WriteLine(c1/ec/ec);
+            Console.WriteLine(c2/ ec/ec);
+
         }
     }
 }

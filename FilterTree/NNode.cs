@@ -96,8 +96,9 @@ namespace FilterTree
             return l;
         }
 
-        public ArrayList join(Node x, int threshold)
+        public pair join(Node x, int threshold)
         {
+            long match = 0;
             ArrayList output = new ArrayList();
             Queue pairs = new Queue();
             pairs.Enqueue(new pair(this, x));
@@ -117,9 +118,9 @@ namespace FilterTree
 
                 if ((x1.children != null) && (x2.children != null))
                 {
-                    foreach (Node child in x1.children)
+                    foreach (Node child in x1.children.Values)
                     {
-                        foreach (Node child2 in x2.children)
+                        foreach (Node child2 in x2.children.Values)
                         {
                             if (child2.p.diff(child.p) <= threshold)
                             {
@@ -130,7 +131,7 @@ namespace FilterTree
                 }
                 else if ((x2.children == null) && (x1.children != null))
                 {
-                    foreach (Node child in x1.children)
+                    foreach (Node child in x1.children.Values)
                     {
                             if (x2.p.diff(child.p) <= threshold)
                             {
@@ -140,10 +141,14 @@ namespace FilterTree
                 }
                 else
                 {
-                    output.Add(new pair(x1,x2));
+                    if (x2.p.diff(x1.p) <= threshold)
+                    {
+                        output.Add(new pair(x1, x2));
+                        match += x1.words.Count * x2.words.Count;
+                    }
                 }
             }
-            return output;
+            return new pair(output,match);
         }
     };
 }

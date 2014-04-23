@@ -56,13 +56,27 @@ namespace FilterTree
             {
                 return gdiff(x,this);
             }
+            //approach one
             int d = 0;
+            int md = 0;
             for (int i = 0; i < x.DIMENSIONS; i++)
             {
-                d +=(int) Math.Abs(coordinates[i] - x.coordinates[i]);
+                int tmd=(int) Math.Abs(coordinates[i] - x.coordinates[i]);
+                if (tmd > md) md = tmd;
+                d +=tmd;
             }
-            
-            return (int)Math.Ceiling(d/2.0);
+            d=(int)Math.Ceiling(d/2.0);
+            //apraoch two length
+            int l = 0;
+            int l1 = 0;
+            int l2=0;
+            for (int i = 0; i < x.DIMENSIONS; i++)
+            {
+                l1+=coordinates[i];
+                l2+=x.coordinates[i];
+            }
+            l = Math.Abs(l1-l2);
+            return Math. Max(Math.Max(l,d),md);
         }
         public override int GetHashCode()
         {
