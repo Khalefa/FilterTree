@@ -5,8 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
+using RTree;
+
+
 //Here is the once-per-application setup information
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
+
 namespace FilterTree
 {
     class Program
@@ -136,22 +141,53 @@ namespace FilterTree
             //Hashtable t = processR(words);
             
         }
-        static void Main(string[] args)
+        static void run()
         {
             ArrayList words = readinput("c:\\data\\web2.txt");
-            double ec = words.Count ;
+            double ec = words.Count;
             DateTime st = DateTime.Now;
             FilterTree ft = new FilterTree(words);
-            pair xx1= ft.join(ft,1);
-            pair xx2 = ft.join(ft, 2);
+            TimeSpan ts = DateTime.Now - st;
+            pair xx1 = ft.join(ft, 1);
+            //pair xx2 = ft.join(ft, 2);
             DateTime et = DateTime.Now;
+            Console.WriteLine(ts);
             Console.WriteLine(et - st);
             long c1 = (long)xx1.second;
-            long c2 = (long)xx2.second;
+           // long c2 = (long)xx2.second;
             Console.WriteLine(ec);
-            Console.WriteLine(c1/ec/ec);
-            Console.WriteLine(c2/ ec/ec);
+            Console.WriteLine(c1 / ec / ec);
 
+            RTree<Node> rt = new RTree<Node>();
+            
+            foreach (Node w in ft.root.children.Values)
+            {                
+                rt.Add(new Rectangle(w.p), w);
+            }
+            RTree<Node> rt1 = new RTree<Node>();
+            //ArrayList leafs1 = ft.getLeafs(1);
+            foreach (Node w1 in ft.root.children.Values)
+            {
+                rt1.Add(new Rectangle(w1.p), w1);
+            }
+            List<pair> a= rt.joins(rt1, 1);
+            long matches = 0;
+            foreach (pair p in a)
+            {
+                Node p1 = (Node)p.first;
+                Node p2 = (Node)p.second;
+                matches+=p1.words.Count * p2.words.Count;
+            }
+            //Console.WriteLine(c2 / ec / ec);
+        }
+        static void Main(string[] args)
+        {
+            //paramters b and n
+            Console.WriteLine("level 0");
+            run();
+           // heredofamilial
+             //   archgenethliac
+        
         }
     }
 }

@@ -1,8 +1,6 @@
-
 using System;
 namespace FilterTree
 {
-
     public class Point
     {
         public Word word;
@@ -15,10 +13,7 @@ namespace FilterTree
             return s.TrimEnd(',');
         }
         int DIMENSIONS = 2;
-
         internal int[] coordinates;
-
-
         public Point(Point p)
         {
             DIMENSIONS = p.DIMENSIONS;
@@ -54,29 +49,29 @@ namespace FilterTree
         {
             if (x.DIMENSIONS != DIMENSIONS)
             {
-                return gdiff(x,this);
+                return gdiff(x, this);
             }
             //approach one
             int d = 0;
             int md = 0;
             for (int i = 0; i < x.DIMENSIONS; i++)
             {
-                int tmd=(int) Math.Abs(coordinates[i] - x.coordinates[i]);
+                int tmd = (int)Math.Abs(coordinates[i] - x.coordinates[i]);
                 if (tmd > md) md = tmd;
-                d +=tmd;
+                d += tmd;
             }
-            d=(int)Math.Ceiling(d/2.0);
+            d = (int)Math.Ceiling(d / 2.0);
             //apraoch two length
             int l = 0;
             int l1 = 0;
-            int l2=0;
+            int l2 = 0;
             for (int i = 0; i < x.DIMENSIONS; i++)
             {
-                l1+=coordinates[i];
-                l2+=x.coordinates[i];
+                l1 += coordinates[i];
+                l2 += x.coordinates[i];
             }
-            l = Math.Abs(l1-l2);
-            return Math. Max(Math.Max(l,d),md);
+            l = Math.Abs(l1 - l2);
+            return Math.Max(Math.Max(l, d), md);
         }
         public override int GetHashCode()
         {
@@ -86,16 +81,15 @@ namespace FilterTree
                 s = s + parent.GetHashCode();
             return s;
         }
-
         public override bool Equals(object obj)
         {
             Point o = (Point)obj;
 
-            if ((parent != null) && (o.parent!=null))
+            if ((parent != null) && (o.parent != null))
             {
                 if (parent.GetHashCode() != o.parent.GetHashCode()) return false;
             }
-            
+
             if (DIMENSIONS != o.DIMENSIONS) return false;
             for (int i = 0; i < DIMENSIONS; i++)
             {

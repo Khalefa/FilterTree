@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//using System.Windows;
 namespace FilterTree
 {
-  public  class Word/*: CSharpQuadTree.IQuadObject*/
+  public class Word
     {
         const int ALPHABET_SIZE = 27;
         public string w;
-        int[] hist; //represting the histogram
-        Point p;
+        public int[] hist; //represting the histogram
+        public Point p;
+        public Word() { }
         public Word(string w)
         {
             this.w = w.ToLower();
             buildHistogram();
             p = getPoint();
-            //   bounds = new Rect(p.coordinates[0], p.coordinates[1], 0.1, 0.1);
         }
         bool isalpha(char c)
         {
@@ -62,7 +61,6 @@ namespace FilterTree
             double range = Math.Floor(ALPHABET_SIZE / d);
             int r = (int)range;
             int n = (int)(Math.Ceiling((double)ALPHABET_SIZE / r));
-
 
             int[] a = new int[n];
             int j = 0;

@@ -25,7 +25,7 @@ using log4net;
 using System.Collections.Generic;
 using System;
 using System.Collections;
-
+using FilterTree;
 
 namespace RTree
 {
@@ -112,7 +112,7 @@ namespace RTree
 
         //the recursion methods require a delegate to retrieve data
         private delegate void intproc(int x);
-
+        private delegate void pairproc(int x, int y);
         /// <summary>
         /// Initialize implementation dependent properties of the RTree.
         /// </summary>
@@ -391,8 +391,51 @@ namespace RTree
             });
             return retval;
         }
+        private void joins(Node<T> m, pairproc v, Node<T> n,int dist)
+        {
+            if (m.isLeaf())
+            {
 
+            }
+            for (int i = 0; i < n.entryCount; i++)
+            {
+                Rectangle ri = n.entries[i];
+                ri = ri.extend(dist);
 
+                for (int j = 0; j < m.entryCount; j++)
+                {
+                    Rectangle mj = m.entries[j];
+                    mj = mj.extend(dist);
+
+                    if (mj.intersects(ri))
+                    {
+                        if (n.isLeaf())
+                        {
+                            v(n.ids[i],m.ids[j]);
+                        }
+                        else
+                        {
+                            Node<T> childNode = getNode(n.ids[i]);
+                            Node<T> cNode = getNode(m.ids[j]);
+                            joins(cNode, v, childNode,dist);
+                        }
+                    }
+                }
+            }
+        }
+
+        public List<pair> joins(RTree<T> r, int distance)
+        {
+            List<pair> retval = new List<pair>();
+            Node<T> rootNode = getNode(rootNodeId);
+            Node<T> m = r.getNode(r.rootNodeId);
+            joins(m , delegate(int id, int id1)
+            {
+                retval.Add(new pair(IdsToItems[id], IdsToItems[id1]));
+            }, rootNode, distance);
+            return retval;
+        }
+        
         private void intersects(Rectangle r, intproc v)
         {
             Node<T> rootNode = getNode(rootNodeId);
@@ -923,6 +966,7 @@ namespace RTree
             }
         }
 
+        
         /**
          * Used by delete(). Ensures that all nodes from the passed node
          * up to the root have the minimum number of entries.

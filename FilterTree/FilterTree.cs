@@ -10,7 +10,7 @@ namespace FilterTree
     class FilterTree
     {
 
-        Node root;
+       public Node root;
 
         public FilterTree()
         {
